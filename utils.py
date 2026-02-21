@@ -1,4 +1,5 @@
 from current_datetime import current_datetime
+from notes import create_note, delete_note, edit_note, view_notes
 
 system_message = {
         "role": "system",
@@ -32,8 +33,107 @@ tools = [
             }
         }
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "create_note",
+            "description": "Create a new note (title, description, priority, status).",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Title of the provided note"
+                    },
+                    "desc": {
+                        "type": "string",
+                        "description": "Description of the provided note"
+                    },
+                    "priority": {
+                        "type": "string",
+                        "enum": ["low", "medium", "high"],
+                        "description": "Priority of the provided note"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": ["pending", "in progress", "completed"],
+                        "description": "Status of the provided note"
+                    },
+                },
+                "required": ["title", "desc", "priority", "status"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "edit_note",
+            "description": "Update an existing note using optional arguments (title, description, priority, status)",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID to identify the task"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Title of the provided note (optional)"
+                    },
+                    "desc": {
+                        "type": "string",
+                        "description": "Description of the provided note (optional)"
+                    },
+                    "priority": {
+                        "type": "string",
+                        "enum": ["low", "medium", "high"],
+                        "description": "Priority of the provided note (optional)"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": ["pending", "in progress", "completed"],
+                        "description": "Status of the provided note (optional)"
+                    },
+                },
+                "required": ["id"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "delete_note",
+            "description": "Delete an existing note using the note ID",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID to identify the task"
+                    }
+                },
+                "required": ["id"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "view_notes",
+            "description": "Output the full table of existing notes",
+            "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": []
+            }
+        }
+    },
 ]
 
 function_map = {
-    "current_datetime": current_datetime
+    "current_datetime": current_datetime,
+    "create_note": create_note,
+    "edit_note": edit_note,
+    "delete_note": delete_note,
+    "view_notes": view_notes
 }
