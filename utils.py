@@ -1,5 +1,6 @@
 from current_datetime import current_datetime
 from notes import create_note, delete_note, edit_note, view_notes
+from weather import get_current_weather
 
 system_message = {
         "role": "system",
@@ -27,6 +28,23 @@ tools = [
                     "current_time": {
                         "type": "boolean",
                         "description": "Set to true to retrieve only the current time."
+                    }
+                },
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_current_weather",
+            "description": "Fetch current weather for a city. Use for ANY weather query.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "city": {
+                        "type": "string",
+                        "description": "City name, e.g., 'Madrid' or 'Barcelona, ES'."
                     }
                 },
                 "required": []
@@ -133,6 +151,7 @@ tools = [
 function_map = {
     "current_datetime": current_datetime,
     "create_note": create_note,
+    "get_current_weather": get_current_weather,
     "edit_note": edit_note,
     "delete_note": delete_note,
     "view_notes": view_notes
