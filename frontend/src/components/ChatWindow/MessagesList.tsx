@@ -4,7 +4,7 @@ import { type RootState, type MessageProps } from "../../store";
 import Message from "./Message";
 
 export default function MessagesList(): JSX.Element {
-  const { messages } = useSelector((state: RootState) => state.chat);
+  const { messages, isLoading } = useSelector((state: RootState) => state.chat);
 
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -27,8 +27,16 @@ export default function MessagesList(): JSX.Element {
   };
 
   return (
-    <div ref={bottomRef} className="messages-list">
+    <div className="messages-list">
       {renderMessages(messages)}
+      {isLoading && (
+        <div className="message-loading">
+          <span />
+          <span />
+          <span />
+        </div>
+      )}
+      <div ref={bottomRef} />
     </div>
   );
 }

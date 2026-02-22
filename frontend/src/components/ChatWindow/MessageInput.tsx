@@ -41,7 +41,7 @@ export default function MessageInput(): JSX.Element {
         name="message"
       ></textarea>
       <button disabled={isLoading} type="submit">
-        Send
+        <i className="fa-solid fa-paper-plane"></i>
       </button>
     </form>
   );
