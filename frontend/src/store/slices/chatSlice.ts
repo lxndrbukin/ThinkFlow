@@ -10,7 +10,11 @@ const initialState: ChatProps = {
 const chatSlice = createSlice({
   name: "chat",
   initialState,
-  reducers: {},
+  reducers: {
+    addMessage(state: ChatProps, action: PayloadAction<MessageProps>) {
+      state.messages.push(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(
       getMessages.fulfilled,
@@ -37,8 +41,13 @@ const chatSlice = createSlice({
     );
     builder.addCase(sendMessage.rejected, (state: ChatProps) => {
       state.isLoading = false;
+      state.messages.push({
+        role: "assistant",
+        content: "Sorry, something went wrong. Please try again.",
+      });
     });
   },
 });
 
+export const { addMessage } = chatSlice.actions;
 export default chatSlice.reducer;

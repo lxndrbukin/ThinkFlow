@@ -1,10 +1,16 @@
-import type { JSX } from "react";
+import { type JSX, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { type RootState, type MessageProps } from "../../store";
 import Message from "./Message";
 
 export default function MessagesList(): JSX.Element {
   const { messages } = useSelector((state: RootState) => state.chat);
+
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const renderMessages = (
     messages: Array<MessageProps>,
@@ -20,5 +26,9 @@ export default function MessagesList(): JSX.Element {
       });
   };
 
-  return <div className="messages-list">{renderMessages(messages)}</div>;
+  return (
+    <div ref={bottomRef} className="messages-list">
+      {renderMessages(messages)}
+    </div>
+  );
 }
