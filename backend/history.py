@@ -1,16 +1,17 @@
 import json
 import os
+from utils import system_message
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 HISTORY_FILE = os.path.join(BASE_DIR, "../data/chat_history.json")
 
-def save_history(messages=[]):
+def save_history(messages=[system_message]):
     with open(HISTORY_FILE, "w") as history:
         json.dump(messages, history, indent=4)
 
 def load_history():
     if not os.path.exists(HISTORY_FILE):
-        return []
+        return [system_message]
     with open(HISTORY_FILE, "r") as history:
         return json.load(history)
 

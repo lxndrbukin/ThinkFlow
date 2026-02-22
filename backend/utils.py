@@ -4,12 +4,7 @@ from weather import get_current_weather
 
 system_message = {
         "role": "system",
-        "content": [
-            {
-                "type": "text",
-                "text": "You are a friendly personal assistant."
-            }
-        ]
+        "content": "You are a friendly personal assistant."
     }
 
 tools = [
