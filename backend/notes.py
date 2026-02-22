@@ -3,15 +3,18 @@ import os
 from datetime import datetime
 from tabulate import tabulate
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+NOTES_FILE = os.path.join(BASE_DIR, "../data/notes.json")
+
 def load_notes():
-    if not os.path.exists("notes.json"):
+    if not os.path.exists(NOTES_FILE):
         return []
-    with open("notes.json", "r") as file:
+    with open(NOTES_FILE, "r") as file:
         data = json.load(file)
     return data
 
 def save_notes(notes):
-    with open("notes.json", "w") as file:
+    with open(NOTES_FILE, "w") as file:
         json.dump(notes, file, indent=4)
 
 def create_note(title, desc, priority, status):

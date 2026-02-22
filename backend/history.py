@@ -1,11 +1,15 @@
 import json
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+HISTORY_FILE = os.path.join(BASE_DIR, "../data/chat_history.json")
 
 def save_history(messages=[]):
-    with open("chat_history.json", "w") as history:
+    with open(HISTORY_FILE, "w") as history:
         json.dump(messages, history, indent=4)
 
 def load_history():
-    with open("chat_history.json", "r") as history:
+    with open(HISTORY_FILE, "r") as history:
         return json.load(history)
 
 def trim_history(messages, max_count=20):
