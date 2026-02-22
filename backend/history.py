@@ -9,6 +9,8 @@ def save_history(messages=[]):
         json.dump(messages, history, indent=4)
 
 def load_history():
+    if not os.path.exists(HISTORY_FILE):
+        return []
     with open(HISTORY_FILE, "r") as history:
         return json.load(history)
 
