@@ -44,10 +44,10 @@ tools = [
                 "properties": {
                     "city": {
                         "type": "string",
-                        "description": "City name, e.g., 'Madrid' or 'Barcelona, ES'."
+                        "description": "City name, e.g., 'Madrid' or 'London'."
                     }
                 },
-                "required": []
+                "required": ["city"]
             }
         }
     },

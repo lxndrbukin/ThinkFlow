@@ -3,9 +3,8 @@ from dotenv import load_dotenv
 from os import getenv
 from json import loads
 from openai import OpenAI
-from history import save_history
+from history import save_history, trim_history
 from utils import tools, function_map
-from current_datetime import current_datetime
 
 load_dotenv()
 API_KEY = getenv("OPENAI_API_KEY")
@@ -13,7 +12,7 @@ API_KEY = getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=API_KEY)
 
 def chat(history):
-    messages = history.copy()
+    messages = trim_history(history.copy())
     while True:
         prompt = input("You:\n")
         messages.append({
