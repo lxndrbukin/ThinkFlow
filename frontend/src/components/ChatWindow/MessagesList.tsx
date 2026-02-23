@@ -4,13 +4,15 @@ import { type RootState, type MessageProps } from "../../store";
 import Message from "./Message";
 
 export default function MessagesList(): JSX.Element {
-  const { messages, isLoading } = useSelector((state: RootState) => state.chat);
+  const { messages, isLoading, streamingContent } = useSelector(
+    (state: RootState) => state.chat,
+  );
 
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isLoading]);
+  }, [messages, isLoading, streamingContent]);
 
   const renderMessages = (
     messages: Array<MessageProps>,
@@ -38,16 +40,20 @@ export default function MessagesList(): JSX.Element {
   return (
     <div className="messages-list">
       {renderMessages(messages)}
+
       {messages.length === 1 &&
         messages[0].role == "system" &&
         !isLoading &&
         renderEmptyMessage()}
-      {isLoading && (
+      {isLoading && !streamingContent && (
         <div className="message-loading">
           <span />
           <span />
           <span />
         </div>
+      )}
+      {streamingContent && (
+        <Message role="assistant" content={streamingContent} />
       )}
       <div ref={bottomRef} />
     </div>

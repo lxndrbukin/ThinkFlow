@@ -5,10 +5,6 @@ export type MessageProps = {
 
 export type ChatProps = {
   messages: Array<MessageProps>;
+  streamingContent: string;
   isLoading: boolean;
-};
-
-export type ChatResponse = {
-  response: string;
-  history: Array<MessageProps>;
 };

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   type AppDispatch,
   type RootState,
-  sendMessage,
+  streamMessage,
   addMessage,
 } from "../../store";
 
@@ -16,7 +16,7 @@ export default function MessageInput(): JSX.Element {
   const handleSend = () => {
     if (!message.trim() || isLoading) return;
     dispatch(addMessage({ role: "user", content: message }));
-    dispatch(sendMessage({ message, history: messages }));
+    dispatch(streamMessage({ message, history: messages }));
     setMessage("");
   };
 

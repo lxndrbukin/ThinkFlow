@@ -1,9 +1,10 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { ChatProps, MessageProps, ChatResponse } from "./types";
-import { getMessages, sendMessage } from "../thunks/chat";
+import type { ChatProps, MessageProps } from "./types";
+import { getMessages, streamMessage } from "../thunks/chat";
 
 const initialState: ChatProps = {
   messages: [],
+  streamingContent: "",
   isLoading: false,
 };
 
@@ -13,6 +14,17 @@ const chatSlice = createSlice({
   reducers: {
     addMessage(state: ChatProps, action: PayloadAction<MessageProps>) {
       state.messages.push(action.payload);
+    },
+    appendChunk(state: ChatProps, action: PayloadAction<string>) {
+      state.streamingContent += action.payload;
+    },
+    finaliseMessage(state: ChatProps) {
+      state.messages.push({
+        role: "assistant",
+        content: state.streamingContent,
+      });
+      state.streamingContent = "";
+      state.isLoading = false;
     },
   },
   extraReducers: (builder) => {
@@ -29,17 +41,10 @@ const chatSlice = createSlice({
     builder.addCase(getMessages.rejected, (state: ChatProps) => {
       state.isLoading = false;
     });
-    builder.addCase(sendMessage.pending, (state: ChatProps) => {
+    builder.addCase(streamMessage.pending, (state: ChatProps) => {
       state.isLoading = true;
     });
-    builder.addCase(
-      sendMessage.fulfilled,
-      (state: ChatProps, action: PayloadAction<ChatResponse>) => {
-        state.messages = action.payload.history;
-        state.isLoading = false;
-      },
-    );
-    builder.addCase(sendMessage.rejected, (state: ChatProps) => {
+    builder.addCase(streamMessage.rejected, (state: ChatProps) => {
       state.isLoading = false;
       state.messages.push({
         role: "assistant",
@@ -49,5 +54,5 @@ const chatSlice = createSlice({
   },
 });
 
-export const { addMessage } = chatSlice.actions;
+export const { addMessage, appendChunk, finaliseMessage } = chatSlice.actions;
 export default chatSlice.reducer;
