@@ -10,7 +10,7 @@ export default function MessagesList(): JSX.Element {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, isLoading]);
 
   const renderMessages = (
     messages: Array<MessageProps>,
@@ -26,9 +26,22 @@ export default function MessagesList(): JSX.Element {
       });
   };
 
+  const renderEmptyMessage = (): JSX.Element => {
+    return (
+      <div className="messages-empty">
+        <h2>How can I help?</h2>
+        <p>Ask me anything</p>
+      </div>
+    );
+  };
+
   return (
     <div className="messages-list">
       {renderMessages(messages)}
+      {messages.length === 1 &&
+        messages[0].role == "system" &&
+        !isLoading &&
+        renderEmptyMessage()}
       {isLoading && (
         <div className="message-loading">
           <span />

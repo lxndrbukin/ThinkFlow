@@ -39,6 +39,7 @@ export default function MessageInput(): JSX.Element {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         name="message"
+        placeholder="Ask anything"
       ></textarea>
       <button disabled={isLoading} type="submit">
         <i className="fa-solid fa-paper-plane"></i>
