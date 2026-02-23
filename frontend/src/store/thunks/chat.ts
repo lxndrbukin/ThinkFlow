@@ -28,9 +28,10 @@ export const streamMessage = createAsyncThunk(
       const lines = text.split("\n\n").filter(Boolean);
       for (const line of lines) {
         const chunk = line.replace("data: ", "");
-        if (chunk && chunk !== "[DONE]") {
-          dispatch(appendChunk(chunk));
-        } else if (chunk === "[DONE]") {
+        const decoded = chunk.replace(/\\n/g, "\n");
+        if (decoded && decoded !== "[DONE]") {
+          dispatch(appendChunk(decoded));
+        } else if (decoded === "[DONE]") {
           dispatch(finaliseMessage());
           return;
         }
