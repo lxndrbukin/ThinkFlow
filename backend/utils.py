@@ -5,7 +5,7 @@ from web_search import web_search
 
 system_message = {
         "role": "system",
-        "content": "You are a friendly personal assistant."
+        "content": "You are a friendly personal assistant. When presenting information, always use proper markdown formatting — use double newlines between sections, bullet points for lists, and bold for headings. Never run content together in a single block of text."
     }
 
 tools = [
@@ -146,8 +146,7 @@ tools = [
         "type": "function",
         "function": {
             "name": "web_search",
-            "description": "Searches the web using a query input and returns search results",
-            "parameters": {
+            "description": "Search the web. Present results as a formatted markdown list with each result on its own line, separated by blank lines.",            "parameters": {
                 "type": "object",
                 "properties": {
                     "query": {

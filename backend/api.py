@@ -25,7 +25,7 @@ def history():
 def post_chat(request: ChatRequest):
     def stream_generator(message, history):
         for chunk in chat(message=message, history=history):
-            yield f"data: {chunk}\n\n"
+            yield f"data: {chunk.replace(chr(10), '\\n')}\n\n"
         yield "data: [DONE]\n\n"
 
     return StreamingResponse(

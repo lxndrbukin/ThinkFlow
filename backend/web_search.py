@@ -14,8 +14,8 @@ def web_search(query: str, max_results: int = 3):
         if not len(response["results"]):
             return "No search results found"
         for idx, result in enumerate(response["results"]):
-            output += f"\n{idx}. {result["title"]}\n{result["url"]}\n{result["content"][:200]}..."
+            output += f"**{idx + 1}. [{result['title']}]({result['url']})**\n\n"
+            output += f"{result['content'][:200]}\n\n"
         return output
     except Exception as e:
         return f"Error: {e}"
-
