@@ -164,8 +164,20 @@ body {
   border-radius: var(--radius-md);
   line-height: 1.65;
   font-size: 14.5px;
-  white-space: pre-wrap;
   word-break: break-word;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.message-content a {
+  color: var(--accent);
+}
+
+.message-content ol {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .message:has(.message-role-user) {

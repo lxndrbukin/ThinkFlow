@@ -1,10 +1,11 @@
 from current_datetime import current_datetime
 from notes import create_note, delete_note, edit_note, view_notes
 from weather import get_current_weather
+from web_search import web_search
 
 system_message = {
         "role": "system",
-        "content": "You are a friendly personal assistant."
+        "content": "You are a friendly personal assistant. When presenting information, always use proper markdown formatting — use double newlines between sections, bullet points for lists, and bold for headings. Never run content together in a single block of text."
     }
 
 tools = [
@@ -141,9 +142,26 @@ tools = [
             }
         }
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "web_search",
+            "description": "Search the web. Present results as a formatted markdown list with each result on its own line, separated by blank lines.",            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "Query provided by the user for the search"
+                    }
+                },
+                "required": ["query"]
+            }
+        }
+    },
 ]
 
 function_map = {
+    "web_search": web_search,
     "current_datetime": current_datetime,
     "create_note": create_note,
     "get_current_weather": get_current_weather,
