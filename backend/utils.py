@@ -1,6 +1,7 @@
 from current_datetime import current_datetime
 from notes import create_note, delete_note, edit_note, view_notes
 from weather import get_current_weather
+from web_search import web_search
 
 system_message = {
         "role": "system",
@@ -141,9 +142,27 @@ tools = [
             }
         }
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "web_search",
+            "description": "Searches the web using a query input and returns search results",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "Query provided by the user for the search"
+                    }
+                },
+                "required": ["query"]
+            }
+        }
+    },
 ]
 
 function_map = {
+    "web_search": web_search,
     "current_datetime": current_datetime,
     "create_note": create_note,
     "get_current_weather": get_current_weather,
