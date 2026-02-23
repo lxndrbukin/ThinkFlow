@@ -1,4 +1,4 @@
-import time
+from typing import Generator
 from dotenv import load_dotenv
 from os import getenv
 from json import loads
@@ -11,7 +11,7 @@ API_KEY = getenv("OPENAI_API_KEY")
 
 client = OpenAI(api_key=API_KEY)
 
-def chat(message: str, history: list) -> dict:
+def chat(message: str, history: list) -> Generator[str, None, None]:
     messages = trim_history(history.copy())
     messages.append({
         "role": "user",
@@ -49,15 +49,26 @@ def chat(message: str, history: list) -> dict:
             for chunk in response:
                 if chunk.choices[0].delta.content is not None:
                     text = chunk.choices[0].delta.content
-                    print(text, end="", flush=True)
                     output += text
+                    yield text
         else:
-            output = choice.message.content
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=messages,
+                tools=tools,
+                max_completion_tokens=250,
+                stream=True
+            )
+            output = ""
+            for chunk in response:
+                if chunk.choices[0].delta.content is not None:
+                    text = chunk.choices[0].delta.content
+                    output += text
+                    yield text
         messages.append({
             "role": "assistant",
             "content": output
         })
         save_history(messages)
     except Exception as e:
-        output = f"Ooops, {e}"
-    return {"response": output, "history": messages}
+        yield f"Ooops, {e}"

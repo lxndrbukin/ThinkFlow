@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from models.chat import ChatRequest
 from history import load_history
 from chat import chat
@@ -22,7 +23,12 @@ def history():
 
 @app.post("/chat")
 def post_chat(request: ChatRequest):
-    try:
-        return chat(message=request.message, history=request.history)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    def stream_generator(message, history):
+        for chunk in chat(message=message, history=history):
+            yield f"data: {chunk}\n\n"
+        yield "data: [DONE]\n\n"
+
+    return StreamingResponse(
+        stream_generator(request.message, request.history),
+        media_type="text/event-stream"
+    )
