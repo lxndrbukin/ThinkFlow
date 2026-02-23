@@ -8,6 +8,14 @@ export const getMessages = createAsyncThunk("chat/getMessages", async () => {
   return response.data;
 });
 
+export const deleteHistory = createAsyncThunk(
+  "chat/deleteHistory",
+  async (_, { dispatch }) => {
+    await axios.delete("/history");
+    dispatch(getMessages());
+  },
+);
+
 export const streamMessage = createAsyncThunk(
   "chat/streamMessage",
   async (
