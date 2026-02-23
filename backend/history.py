@@ -15,6 +15,11 @@ def load_history():
     with open(HISTORY_FILE, "r") as history:
         return json.load(history)
 
+def delete_history():
+    if os.path.exists(HISTORY_FILE):
+        os.remove(HISTORY_FILE)
+    return {"message": "History cleared"}
+
 def trim_history(messages, max_count=20):
     if len(messages) <= max_count:
         return messages
