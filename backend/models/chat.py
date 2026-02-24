@@ -9,10 +9,6 @@ class Role(str, Enum):
 
 class ChatRequest(BaseModel):
     message: str
-    chat_id: int
-
-class ChatResponse(BaseModel):
-    pass
 
 class ChatMessageCreate(BaseModel):
     content: str | None

@@ -14,25 +14,25 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/history")
-def history():
+@app.get("/chats/{chat_id}")
+def chat_history(chat_id: int):
     try:
-        return load_history()
+        return load_history(chat_id)
     except Exception as e:
         raise HTTPException(status_code=500, detail=(str(e)))
 
-@app.delete("/history")
-def del_history():
-    return delete_history()
+@app.delete("/chats/{chat_id}")
+def del_chat(chat_id: int):
+    return delete_history(chat_id)
 
-@app.post("/chat")
-def post_chat(request: ChatRequest):
-    def stream_generator(message, history):
-        for chunk in chat(message=message, history=history):
+@app.post("/chats/{chat_id}")
+def post_chat(chat_id: int, request: ChatRequest):
+    def stream_generator(message):
+        for chunk in chat(message=message, chat_id=chat_id):
             yield f"data: {chunk.replace(chr(10), '\\n')}\n\n"
         yield "data: [DONE]\n\n"
 
     return StreamingResponse(
-        stream_generator(request.message, request.history),
+        stream_generator(request.message),
         media_type="text/event-stream"
     )
