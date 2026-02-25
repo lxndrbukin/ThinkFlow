@@ -1,15 +1,18 @@
 import { type JSX } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { type AppDispatch, type RootState, deleteHistory } from "../../store";
+import { type AppDispatch, type RootState, deleteChat } from "../../store";
 
 export default function ChatHeader(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { isLoading } = useSelector((state: RootState) => state.chat);
+  const { isLoading, chatId } = useSelector(
+    (state: RootState) => state.chats.currentChat,
+  );
 
   const confirm = () => {
+    if (!chatId) return;
     if (window.confirm("Delete chat history?")) {
-      dispatch(deleteHistory());
+      dispatch(deleteChat(chatId));
     }
   };
 

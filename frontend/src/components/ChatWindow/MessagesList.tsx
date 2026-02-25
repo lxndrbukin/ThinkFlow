@@ -5,7 +5,7 @@ import Message from "./Message";
 
 export default function MessagesList(): JSX.Element {
   const { messages, isLoading, streamingContent } = useSelector(
-    (state: RootState) => state.chat,
+    (state: RootState) => state.chats.currentChat,
   );
 
   const bottomRef = useRef<HTMLDivElement>(null);

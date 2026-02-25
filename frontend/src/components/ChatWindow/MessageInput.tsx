@@ -11,12 +11,14 @@ export default function MessageInput(): JSX.Element {
   const [message, setMessage] = useState("");
 
   const dispatch = useDispatch<AppDispatch>();
-  const { messages, isLoading } = useSelector((state: RootState) => state.chat);
+  const { isLoading, chatId } = useSelector(
+    (state: RootState) => state.chats.currentChat,
+  );
 
   const handleSend = () => {
-    if (!message.trim() || isLoading) return;
+    if (!message.trim() || isLoading || !chatId) return;
     dispatch(addMessage({ role: "user", content: message }));
-    dispatch(streamMessage({ message, history: messages }));
+    dispatch(streamMessage({ chatId, message }));
     setMessage("");
   };
 
