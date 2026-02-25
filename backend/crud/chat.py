@@ -2,14 +2,22 @@ from fastapi import HTTPException
 from db_models.chat import Chat, ChatMessage
 from models.chat import ChatMessageResponse, ChatResponse
 from sqlalchemy.orm import Session
+from utils import system_message
 
 def create_chat(db: Session, title: str = "New Chat"):
     chat = Chat(
         title=title
     )
     db.add(chat)
+    db.flush()
+    system_msg = ChatMessage(
+        content=system_message["content"],
+        role=system_message["role"],
+        extra=None,
+        chat_id=chat.id
+    )
+    db.add(system_msg)
     db.commit()
-    db.refresh(chat)
     return ChatResponse(id=chat.id, title=chat.title, created_at=chat.created_at)
 
 def get_chats(db: Session):

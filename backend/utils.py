@@ -1,7 +1,7 @@
-from current_datetime import current_datetime
-from notes import create_note, edit_note, delete_note, get_note, get_notes
-from weather import get_current_weather
-from web_search import web_search
+from tools.current_datetime import current_datetime
+from tools.notes import create_note, edit_note, delete_note, get_note, get_notes
+from tools.weather import get_current_weather
+from tools.web_search import web_search
 
 system_message = {
         "role": "system",
