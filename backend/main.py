@@ -1,7 +1,7 @@
 import uvicorn
-from backend.db import engine, Base
-from backend.db_models.chat import Chat, ChatMessage
-from backend.db_models.notes import Note
+from db import engine, Base
+from db_models.chat import Chat, ChatMessage
+from db_models.notes import Note
 
 Base.metadata.create_all(bind=engine)
 

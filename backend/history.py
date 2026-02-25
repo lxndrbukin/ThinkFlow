@@ -1,4 +1,4 @@
-from backend.models.chat import ChatMessageCreate
+from models.chat import ChatMessageCreate
 from db import SessionLocal
 from db_models.chat import ChatMessage
 

@@ -12,7 +12,7 @@ API_KEY = getenv("OPENAI_API_KEY")
 
 client = OpenAI(api_key=API_KEY)
 
-def chat(chat_id: int, message: str) -> Generator[str, None, None]:
+def ai_chat(chat_id: int, message: str) -> Generator[str, None, None]:
     messages = trim_history(load_history(chat_id))
     message = ChatMessageCreate(
         role=Role.user,

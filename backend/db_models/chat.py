@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey, JSON, DateTime
 from sqlalchemy.orm import relationship
-from backend.db import Base
+from db import Base
 from datetime import datetime, timezone
 
 class Chat(Base):

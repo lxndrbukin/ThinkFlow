@@ -1,65 +1,77 @@
-import json
-import os
-from datetime import datetime
-from tabulate import tabulate
+from models.notes import NoteCreate, NoteUpdate, Priority, Status
+from crud.notes import (
+    create_note as create_note_crud,
+    edit_note as edit_note_crud,
+    delete_note as delete_note_crud,
+    get_note as get_note_crud,
+    get_notes as get_notes_crud
+)
+from db import SessionLocal
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-NOTES_FILE = os.path.join(BASE_DIR, "../data/notes.json")
+def get_notes():
+    db = SessionLocal()
+    try:
+        notes = get_notes_crud(db)
+        if not notes:
+            return "No notes found"
+        return "\n\n".join([
+            f"**ID {n.id}: {n.title}**\n- Priority: {n.priority}\n- Status: {n.status}\n- {n.desc}"
+            for n in notes
+        ])
+    finally:
+        db.close()
 
-def load_notes():
-    if not os.path.exists(NOTES_FILE):
-        return []
-    with open(NOTES_FILE, "r") as file:
-        data = json.load(file)
-    return data
+def get_note(note_id: int):
+    db = SessionLocal()
+    try:
+        note = get_note_crud(note_id, db)
+        return f"**ID {note.id}: {note.title}**\n- Priority: {note.priority}\n- Status: {note.status}\n- {note.desc}"
+    except Exception:
+        return f"Note with ID {note_id} not found"
+    finally:
+        db.close()
 
-def save_notes(notes):
-    with open(NOTES_FILE, "w") as file:
-        json.dump(notes, file, indent=4)
+def create_note(title: str, desc: str, priority: Priority, status: Status):
+    db = SessionLocal()
+    try:
+        data = NoteCreate(
+            title=title,
+            desc=desc,
+            priority=priority,
+            status=status
+        )
+        result = create_note_crud(data, db)
+        return f"Note {title} created with ID {result.id}"
+    finally:
+        db.close()
 
-def create_note(title, desc, priority, status):
-    notes = load_notes()
-    new_id = max(notes, key=lambda x: x.get("id", 0))["id"] + 1 if notes else 1
-    notes.append({
-        "id": new_id,
-        "title": title,
-        "desc": desc,
-        "priority": priority,
-        "status": status,
-        "created_at": datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    })
-    save_notes(notes)
-    return f"Note '{title}' created with ID {new_id}"
+def edit_note(
+        note_id: int,
+        title: str = None,
+        desc: str = None,
+        priority: Priority = None,
+        status: Status = None
+    ):
+    db = SessionLocal()
+    try:
+        data = NoteUpdate(
+            title=title,
+            desc=desc,
+            priority=priority,
+            status=status
+        )
+        result = edit_note_crud(note_id, data, db)
+        return f"Note with ID {result.id} updated"
+    except Exception:
+        return f"Note with ID {note_id} not found"
+    finally:
+        db.close()
 
-def edit_note(id, title=None, desc=None, priority=None, status=None):
-    notes = load_notes()
-    found = False
-    for note in notes:
-        if note["id"] == id:
-            found = True
-            if title is not None:
-                note["title"] = title
-            if desc is not None:
-                note["desc"] = desc
-            if priority is not None:
-                note["priority"] = priority
-            if status is not None:
-                note["status"] = status
-    if not found:
-        return f"Note with ID {id} not found"
-    save_notes(notes)
-    return f"Note with ID {id} updated"
-
-def delete_note(id):
-    notes = load_notes()
-    filtered = [note for note in notes if note["id"] != id]
-    if len(filtered) == len(notes):
-        return f"Note with ID {id} not found"
-    save_notes(filtered)
-    return f"Note with ID {id} deleted"
-
-def view_notes():
-    notes = load_notes()
-    if not len(notes):
-        return "Task list is empty"
-    return f"Full notes list:\n{tabulate(notes, headers="keys", tablefmt="grid")}"
+def delete_note(note_id: int):
+    db = SessionLocal()
+    try:
+        return delete_note_crud(note_id, db)
+    except Exception:
+        return f"Note with ID {note_id} not found"
+    finally:
+        db.close()
