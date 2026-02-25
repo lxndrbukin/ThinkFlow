@@ -20,7 +20,7 @@ def ai_chat(chat_id: int, message: str) -> Generator[str, None, None]:
         extra=None,
         chat_id=chat_id
     )
-    messages.append(message.model_dump(exclude={"chat_id"}, mode="json"))
+    messages.append(message.model_dump(exclude={"chat_id", "extra"}, mode="json"))
     save_history(chat_id, message)
     try:
         response = client.chat.completions.create(
@@ -38,7 +38,11 @@ def ai_chat(chat_id: int, message: str) -> Generator[str, None, None]:
                 extra={"tool_calls": choice.message.model_dump()["tool_calls"]},
                 chat_id=chat_id
             )
-            messages.append(message.model_dump(exclude={"chat_id"}, mode="json"))
+            messages.append({k: v for k, v in {
+                "role": "assistant",
+                "content": None,
+                **(message.extra or {})
+            }.items() if v is not None})
             save_history(chat_id, message)
             for tool_call in choice.message.tool_calls:
                 function_name = tool_call.function.name
@@ -50,7 +54,11 @@ def ai_chat(chat_id: int, message: str) -> Generator[str, None, None]:
                     extra={"tool_call_id": tool_call.id, "name": function_name},
                     chat_id=chat_id
                 )
-                messages.append(message.model_dump(exclude={"chat_id"}, mode="json"))
+                messages.append({k: v for k, v in {
+                    "role": "tool",
+                    "content": str(result),
+                    **(message.extra or {})
+                }.items() if v is not None})
                 save_history(chat_id, message)
             response = client.chat.completions.create(
                 model="gpt-4o-mini",
