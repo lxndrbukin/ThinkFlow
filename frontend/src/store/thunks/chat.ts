@@ -16,7 +16,10 @@ export const getMessages = createAsyncThunk(
   "chat/getMessages",
   async (chatId: number) => {
     const response = await axios.get(`/chats/${chatId}/messages`);
-    return response.data;
+    return response.data.map((msg: any) => ({
+      role: msg.role,
+      content: msg.content,
+    }));
   },
 );
 
