@@ -24,12 +24,5 @@ export default function ChatHeader(): JSX.Element {
     );
   };
 
-  return (
-    <div className="chat-header">
-      <div className="logo">
-        <i className="fa-solid fa-brain"></i>
-      </div>
-      {renderDeleteBtn()}
-    </div>
-  );
+  return <div className="chat-header">{renderDeleteBtn()}</div>;
 }

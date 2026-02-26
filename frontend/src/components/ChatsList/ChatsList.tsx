@@ -6,10 +6,10 @@ import {
   type ChatResponse,
   getChats,
 } from "../../store";
+import ChatsListItem from "./ChatsListItem";
 
 export default function ChatsList(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
-
   const { list } = useSelector((state: RootState) => state.chats);
 
   useEffect(() => {
@@ -18,13 +18,16 @@ export default function ChatsList(): JSX.Element {
 
   const renderChatsList = (chats: Array<ChatResponse>) => {
     return chats.map((chat: ChatResponse) => {
-      return <li key={chat.id}>{chat.title}</li>;
+      return <ChatsListItem {...chat} />;
     });
   };
 
   return (
-    <div>
-      <ul>{renderChatsList(list)}</ul>
+    <div className="sidenav">
+      <div className="logo">
+        <i className="fa-solid fa-brain"></i>
+      </div>
+      <ul className="sidenav-items">{renderChatsList(list)}</ul>
     </div>
   );
 }
