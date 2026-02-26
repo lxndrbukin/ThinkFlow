@@ -31,7 +31,7 @@ def get_chats(db: Session = Depends(get_db)):
     return get_chats_crud(db)
 
 @chats_router.delete("/{chat_id}")
-def del_chat(chat_id: int, db: Session = Depends(get_db)):
+def delete_chat(chat_id: int, db: Session = Depends(get_db)):
     return delete_chat_crud(chat_id, db)
 
 @chats_router.post("/{chat_id}")
