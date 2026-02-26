@@ -1,7 +1,12 @@
 import { type JSX } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { type AppDispatch, streamMessage, createChat } from "../../store";
+import {
+  type AppDispatch,
+  streamMessage,
+  createChat,
+  addMessage,
+} from "../../store";
 import MessageInput from "../ChatWindow/MessageInput";
 
 export default function Home(): JSX.Element {
@@ -11,6 +16,7 @@ export default function Home(): JSX.Element {
   const handleSend = async (message: string) => {
     const chat = await dispatch(createChat()).unwrap();
     dispatch(streamMessage({ chatId: chat.id, message }));
+    dispatch(addMessage({ role: "user", content: message }));
     navigate(`/chat/${chat.id}`);
   };
 

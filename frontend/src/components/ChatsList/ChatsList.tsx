@@ -20,27 +20,23 @@ export default function ChatsList(): JSX.Element {
 
   const renderChatsList = (chats: Array<ChatResponse>) => {
     return chats.map((chat: ChatResponse) => {
-      return <ChatsListItem {...chat} />;
+      return <ChatsListItem key={chat.id} {...chat} />;
     });
   };
 
   return (
-    <div className="sidenav" style={{ width: !showNav ? "60px" : "250px" }}>
-      <i
-        id="nav-toggle"
-        style={{ justifySelf: !showNav ? "center" : "end" }}
-        onClick={() => setShowNav(!showNav)}
-        className="fa-solid fa-bars"
-      ></i>
-      <div style={{ display: !showNav ? "none" : "block" }} className="logo">
-        <i className="fa-solid fa-brain"></i>
+    <div className={`sidenav ${showNav ? "" : "sidenav--collapsed"}`}>
+      <div className="sidenav-top">
+        <div className="logo">
+          <i className="fa-solid fa-brain"></i>
+        </div>
+        <i
+          id="nav-toggle"
+          onClick={() => setShowNav(!showNav)}
+          className={`fa-solid fa-angles-${showNav ? "left" : "right"}`}
+        ></i>
       </div>
-      <ul
-        style={{ display: !showNav ? "none" : "block" }}
-        className="sidenav-items"
-      >
-        {renderChatsList(list)}
-      </ul>
+      <ul className="sidenav-items">{renderChatsList(list)}</ul>
     </div>
   );
 }

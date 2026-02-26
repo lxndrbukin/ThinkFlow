@@ -63,22 +63,27 @@ body {
   border-right: 1px solid var(--border);
   padding: var(--spacing-lg) var(--spacing-md);
   display: grid;
-  grid-template-rows: 30px 70px 1fr;
+  grid-template-rows: 70px 1fr;
 }
 
-.sidenav .logo {
-  font-size: 45px;
+.sidenav .sidenav-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sidenav .sidenav-top .logo {
+  font-size: 35px;
   font-family: var(--mono-font);
   color: var(--muted);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  justify-self: center;
   display: flex;
 }
 
 .sidenav #nav-toggle {
   justify-self: end;
   cursor: pointer;
+  height: fit-content;
 }
 
 .sidenav-items {
@@ -101,6 +106,22 @@ body {
   background: var(--surface-two);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
+}
+
+.sidenav--collapsed {
+  width: 60px;
+}
+
+.sidenav--collapsed .sidenav-top .logo {
+  display: none;
+}
+
+.sidenav--collapsed #nav-toggle {
+  justify-self: center;
+}
+
+.sidenav--collapsed .sidenav-items {
+  display: none;
 }
 
 .home {
