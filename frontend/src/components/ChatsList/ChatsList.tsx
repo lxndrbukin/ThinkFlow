@@ -14,7 +14,7 @@ export default function ChatsList(): JSX.Element {
 
   useEffect(() => {
     dispatch(getChats());
-  }, [list]);
+  }, []);
 
   const renderChatsList = (chats: Array<ChatResponse>) => {
     return chats.map((chat: ChatResponse) => {
