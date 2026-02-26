@@ -51,11 +51,85 @@ body {
 }
 
 .container {
-  max-width: 780px;
   margin: 0 auto;
   height: 100vh;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  width: 100%;
+}
+
+.sidenav {
+  width: 250px;
+  border-right: 1px solid var(--border);
+  padding: var(--spacing-lg) var(--spacing-md);
+  display: grid;
+  grid-template-rows: 70px 1fr;
+}
+
+.sidenav .sidenav-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sidenav .sidenav-top .logo {
+  font-size: 35px;
+  font-family: var(--mono-font);
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: flex;
+}
+
+.sidenav #nav-toggle {
+  justify-self: end;
+  cursor: pointer;
+  height: fit-content;
+}
+
+.sidenav-items {
+  list-style: none;
   display: flex;
   flex-direction: column;
+  gap: 10px;
+}
+
+.sidenav-items .sidenav-item {
+  border: 1px solid transparent;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidenav-items .sidenav-item:hover {
+  background: var(--surface-two);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.sidenav--collapsed {
+  width: 60px;
+}
+
+.sidenav--collapsed .sidenav-top .logo {
+  display: none;
+}
+
+.sidenav--collapsed #nav-toggle {
+  justify-self: center;
+}
+
+.sidenav--collapsed .sidenav-items {
+  display: none;
+}
+
+.home {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  max-width: 780px;
+  width: 100%;
+  justify-self: center;
 }
 
 .chat-window {
@@ -65,6 +139,7 @@ body {
   min-height: 0;
   padding: var(--spacing-lg) 0;
   gap: var(--spacing-md);
+  justify-items: center;
 }
 
 .chat-header {
@@ -74,14 +149,7 @@ body {
   justify-content: space-between;
   gap: var(--spacing-sm);
   border-bottom: 1px solid var(--border);
-}
-
-.chat-header .logo {
-  font-size: 35px;
-  font-family: var(--mono-font);
-  color: var(--muted);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  width: 100%;
 }
 
 .chat-header .status-dot {
@@ -127,6 +195,8 @@ body {
   gap: var(--spacing-md);
   scrollbar-width: thin;
   scrollbar-color: var(--surface-three) transparent;
+  max-width: 780px;
+  width: 90%;
 }
 
 .messages-list::-webkit-scrollbar {
@@ -271,6 +341,8 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   transition: var(--transition);
+  max-width: 780px;
+  width: 90%;
 }
 
 .message-input-form:focus-within {

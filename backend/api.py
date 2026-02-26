@@ -1,9 +1,7 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
-from models.chat import ChatRequest
-from history import load_history, delete_history
-from chat import chat
+from routers.chat import chats_router
+from routers.notes import notes_router
 
 app = FastAPI(title="AI Assistant")
 
@@ -14,25 +12,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/history")
-def history():
-    try:
-        return load_history()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=(str(e)))
+app.include_router(chats_router)
+app.include_router(notes_router)
 
-@app.delete("/history")
-def del_history():
-    return delete_history()
-
-@app.post("/chat")
-def post_chat(request: ChatRequest):
-    def stream_generator(message, history):
-        for chunk in chat(message=message, history=history):
-            yield f"data: {chunk.replace(chr(10), '\\n')}\n\n"
-        yield "data: [DONE]\n\n"
-
-    return StreamingResponse(
-        stream_generator(request.message, request.history),
-        media_type="text/event-stream"
-    )

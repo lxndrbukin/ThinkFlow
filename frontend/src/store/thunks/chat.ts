@@ -1,28 +1,40 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import type { MessageProps } from "../slices/types";
 import { appendChunk, finaliseMessage } from "../slices/chatSlice";
 
-export const getMessages = createAsyncThunk("chat/getMessages", async () => {
-  const response = await axios.get("/history");
+export const createChat = createAsyncThunk("/chats/createChat", async () => {
+  const response = await axios.post("/chats");
   return response.data;
 });
 
-export const deleteHistory = createAsyncThunk(
+export const getChats = createAsyncThunk("/chats/getChats", async () => {
+  const response = await axios.get("/chats");
+  return response.data;
+});
+
+export const getMessages = createAsyncThunk(
+  "chat/getMessages",
+  async (chatId: number) => {
+    const response = await axios.get(`/chats/${chatId}/messages`);
+    return response.data.map((msg: any) => ({
+      role: msg.role,
+      content: msg.content,
+    }));
+  },
+);
+
+export const deleteChat = createAsyncThunk(
   "chat/deleteHistory",
-  async (_, { dispatch }) => {
-    await axios.delete("/history");
-    dispatch(getMessages());
+  async (chatId: number) => {
+    await axios.delete(`/chats/${chatId}`);
+    return chatId;
   },
 );
 
 export const streamMessage = createAsyncThunk(
   "chat/streamMessage",
-  async (
-    data: { message: string; history: Array<MessageProps> },
-    { dispatch },
-  ) => {
-    const response = await fetch("/chat", {
+  async (data: { chatId: number; message: string }, { dispatch }) => {
+    const response = await fetch(`/chats/${data.chatId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

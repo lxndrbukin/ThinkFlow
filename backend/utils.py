@@ -1,7 +1,7 @@
-from current_datetime import current_datetime
-from notes import create_note, delete_note, edit_note, view_notes
-from weather import get_current_weather
-from web_search import web_search
+from tools.current_datetime import current_datetime
+from tools.notes import create_note, edit_note, delete_note, get_note, get_notes
+from tools.weather import get_current_weather
+from tools.web_search import web_search
 
 system_message = {
         "role": "system",
@@ -86,9 +86,9 @@ tools = [
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "id": {
+                    "note_id": {
                         "type": "integer",
-                        "description": "ID to identify the task"
+                        "description": "ID to identify the note"
                     },
                     "title": {
                         "type": "string",
@@ -109,7 +109,7 @@ tools = [
                         "description": "Status of the provided note (optional)"
                     },
                 },
-                "required": ["id"]
+                "required": ["note_id"]
             }
         }
     },
@@ -121,19 +121,19 @@ tools = [
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "id": {
+                    "note_id": {
                         "type": "integer",
-                        "description": "ID to identify the task"
+                        "description": "ID to identify the note"
                     }
                 },
-                "required": ["id"]
+                "required": ["note_id"]
             }
         }
     },
     {
         "type": "function",
         "function": {
-            "name": "view_notes",
+            "name": "get_notes",
             "description": "Output the full table of existing notes",
             "parameters": {
                 "type": "object",
@@ -145,8 +145,26 @@ tools = [
     {
         "type": "function",
         "function": {
+            "name": "get_note",
+            "description": "Output an existing note using the note ID",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "note_id": {
+                        "type": "integer",
+                        "description": "ID to identify the note"
+                    }
+                },
+                "required": ["note_id"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
             "name": "web_search",
-            "description": "Search the web. Present results as a formatted markdown list with each result on its own line, separated by blank lines.",            "parameters": {
+            "description": "Search the web. Present results as a formatted markdown list with each result on its own line, separated by blank lines.",
+            "parameters": {
                 "type": "object",
                 "properties": {
                     "query": {
@@ -167,5 +185,6 @@ function_map = {
     "get_current_weather": get_current_weather,
     "edit_note": edit_note,
     "delete_note": delete_note,
-    "view_notes": view_notes
+    "get_notes": get_notes,
+    "get_note": get_note
 }
