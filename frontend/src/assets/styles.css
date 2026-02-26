@@ -62,7 +62,7 @@ body {
   border-right: 1px solid var(--border);
   padding: var(--spacing-lg) var(--spacing-md);
   display: grid;
-  grid-template-rows: 70px 1fr;
+  grid-template-rows: 30px 70px 1fr;
 }
 
 .sidenav .logo {

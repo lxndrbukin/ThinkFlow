@@ -1,4 +1,4 @@
-import { type JSX, useEffect } from "react";
+import { type JSX, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   type AppDispatch,
@@ -12,6 +12,8 @@ export default function ChatsList(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   const { list } = useSelector((state: RootState) => state.chats);
 
+  const [showNav, setShowNav] = useState(true);
+
   useEffect(() => {
     dispatch(getChats());
   }, []);
@@ -23,11 +25,17 @@ export default function ChatsList(): JSX.Element {
   };
 
   return (
-    <div className="sidenav">
+    <div className="sidenav" style={{ width: !showNav ? "75px" : "250px" }}>
+      <i onClick={() => setShowNav(!showNav)} className="fa-solid fa-bars"></i>
       <div className="logo">
         <i className="fa-solid fa-brain"></i>
       </div>
-      <ul className="sidenav-items">{renderChatsList(list)}</ul>
+      <ul
+        style={{ display: !showNav ? "none" : "block" }}
+        className="sidenav-items"
+      >
+        {renderChatsList(list)}
+      </ul>
     </div>
   );
 }
