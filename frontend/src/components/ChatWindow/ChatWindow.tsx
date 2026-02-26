@@ -14,14 +14,14 @@ import MessageInput from "./MessageInput";
 
 export default function ChatWindow(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
-  const { isLoading } = useSelector(
+  const { isLoading, messages } = useSelector(
     (state: RootState) => state.chats.currentChat,
   );
 
   const { chatId } = useParams();
 
   useEffect(() => {
-    if (chatId) {
+    if (chatId && messages.length === 0) {
       dispatch(getMessages(Number(chatId)));
     }
   }, [chatId]);

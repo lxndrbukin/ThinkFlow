@@ -15,8 +15,8 @@ export default function Home(): JSX.Element {
 
   const handleSend = async (message: string) => {
     const chat = await dispatch(createChat()).unwrap();
-    dispatch(streamMessage({ chatId: chat.id, message }));
     dispatch(addMessage({ role: "user", content: message }));
+    dispatch(streamMessage({ chatId: chat.id, message }));
     navigate(`/chat/${chat.id}`);
   };
 
