@@ -61,14 +61,19 @@ const chatSlice = createSlice({
         content: "Sorry, something went wrong. Please try again.",
       });
     });
-    builder.addCase(deleteChat.fulfilled, (state: Chats) => {
-      state.currentChat.chatId = null;
-      state.currentChat.messages = [];
-    });
+    builder.addCase(
+      deleteChat.fulfilled,
+      (state: Chats, action: PayloadAction<number>) => {
+        state.list = state.list.filter((chat) => chat.id !== action.payload);
+        state.currentChat.chatId = null;
+        state.currentChat.messages = [];
+      },
+    );
     builder.addCase(
       createChat.fulfilled,
       (state: Chats, action: PayloadAction<ChatResponse>) => {
         state.currentChat.chatId = action.payload.id;
+        state.list.push(action.payload);
       },
     );
     builder.addCase(

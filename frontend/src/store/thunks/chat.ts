@@ -22,9 +22,9 @@ export const getMessages = createAsyncThunk(
 
 export const deleteChat = createAsyncThunk(
   "chat/deleteHistory",
-  async (chatId: number, { dispatch }) => {
+  async (chatId: number) => {
     await axios.delete(`/chats/${chatId}`);
-    return dispatch(getChats());
+    return chatId;
   },
 );
 
