@@ -53,8 +53,9 @@ body {
 .container {
   margin: 0 auto;
   height: 100vh;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  width: 100%;
 }
 
 .sidenav {
@@ -73,6 +74,11 @@ body {
   text-transform: uppercase;
   justify-self: center;
   display: flex;
+}
+
+.sidenav #nav-toggle {
+  justify-self: end;
+  cursor: pointer;
 }
 
 .sidenav-items {
@@ -95,6 +101,14 @@ body {
   background: var(--surface-two);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
+}
+
+.home {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  max-width: 780px;
+  width: 100%;
+  justify-self: center;
 }
 
 .chat-window {

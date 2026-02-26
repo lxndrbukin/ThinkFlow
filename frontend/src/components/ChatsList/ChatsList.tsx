@@ -25,9 +25,14 @@ export default function ChatsList(): JSX.Element {
   };
 
   return (
-    <div className="sidenav" style={{ width: !showNav ? "75px" : "250px" }}>
-      <i onClick={() => setShowNav(!showNav)} className="fa-solid fa-bars"></i>
-      <div className="logo">
+    <div className="sidenav" style={{ width: !showNav ? "60px" : "250px" }}>
+      <i
+        id="nav-toggle"
+        style={{ justifySelf: !showNav ? "center" : "end" }}
+        onClick={() => setShowNav(!showNav)}
+        className="fa-solid fa-bars"
+      ></i>
+      <div style={{ display: !showNav ? "none" : "block" }} className="logo">
         <i className="fa-solid fa-brain"></i>
       </div>
       <ul

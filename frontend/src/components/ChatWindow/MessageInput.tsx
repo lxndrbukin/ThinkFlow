@@ -1,37 +1,32 @@
 import { type JSX, type FormEvent, type KeyboardEvent, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  type AppDispatch,
-  type RootState,
-  streamMessage,
-  addMessage,
-} from "../../store";
+import { useSelector } from "react-redux";
+import { type RootState } from "../../store";
 
-export default function MessageInput(): JSX.Element {
+type MessageInputProps = {
+  onSend: (message: string) => void;
+};
+
+export default function MessageInput({
+  onSend,
+}: MessageInputProps): JSX.Element {
   const [message, setMessage] = useState("");
 
-  const dispatch = useDispatch<AppDispatch>();
-  const { isLoading, chatId } = useSelector(
+  const { isLoading } = useSelector(
     (state: RootState) => state.chats.currentChat,
   );
-
-  const handleSend = () => {
-    if (!message.trim() || isLoading || !chatId) return;
-    dispatch(addMessage({ role: "user", content: message }));
-    dispatch(streamMessage({ chatId, message }));
-    setMessage("");
-  };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSend();
+      onSend(message);
+      setMessage("");
     }
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleSend();
+    onSend(message);
+    setMessage("");
   };
 
   return (
