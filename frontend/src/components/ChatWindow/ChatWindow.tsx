@@ -7,6 +7,7 @@ import {
   getMessages,
   streamMessage,
   addMessage,
+  clearMessages,
 } from "../../store";
 import ChatHeader from "./ChatHeader";
 import MessagesList from "./MessagesList";
@@ -14,16 +15,21 @@ import MessageInput from "./MessageInput";
 
 export default function ChatWindow(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
-  const { isLoading, messages } = useSelector(
-    (state: RootState) => state.chats.currentChat,
-  );
+  const {
+    isLoading,
+    chatId: reduxChatId,
+    messages,
+  } = useSelector((state: RootState) => state.chats.currentChat);
 
   const { chatId } = useParams();
 
   useEffect(() => {
-    if (chatId && messages.length === 0) {
-      dispatch(getMessages(Number(chatId)));
+    if (!chatId) return;
+    if (Number(chatId) === reduxChatId && messages.length > 0) {
+      return;
     }
+    dispatch(clearMessages());
+    dispatch(getMessages(Number(chatId)));
   }, [chatId]);
 
   const handleSend = (message: string) => {

@@ -141,7 +141,7 @@ body {
   display: grid;
   grid-template-rows: 70px 1fr auto;
   min-height: 0;
-  padding: var(--spacing-lg) 0;
+  padding: 0 0 var(--spacing-lg) 0;
   gap: var(--spacing-md);
   justify-items: center;
 }

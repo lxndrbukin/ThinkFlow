@@ -1,15 +1,10 @@
 import { type JSX, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  type AppDispatch,
-  type RootState,
-  type ChatResponse,
-  getChats,
-} from "../../store";
-import ChatsListItem from "./ChatsListItem";
+import { type AppDispatch, type RootState, getChats } from "../../store";
+import ChatsList from "./ChatsList";
 
-export default function ChatsList(): JSX.Element {
+export default function SideNav(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   const { list } = useSelector((state: RootState) => state.chats);
 
@@ -18,12 +13,6 @@ export default function ChatsList(): JSX.Element {
   useEffect(() => {
     dispatch(getChats());
   }, []);
-
-  const renderChatsList = (chats: Array<ChatResponse>) => {
-    return chats.map((chat: ChatResponse) => {
-      return <ChatsListItem key={chat.id} {...chat} />;
-    });
-  };
 
   return (
     <div
@@ -43,7 +32,7 @@ export default function ChatsList(): JSX.Element {
           className={`fa-solid fa-angles-${showNav ? "left" : "right"}`}
         ></i>
       </div>
-      <ul className="sidenav-items">{renderChatsList(list)}</ul>
+      <ChatsList list={list} />
     </div>
   );
 }
