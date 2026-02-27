@@ -10,6 +10,7 @@ class Role(str, Enum):
 
 class ChatRequest(BaseModel):
     message: str
+    model: str = "gpt-4o-mini"
 
 class ChatResponse(BaseModel):
     id: int

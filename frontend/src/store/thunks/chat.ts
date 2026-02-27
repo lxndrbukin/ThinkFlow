@@ -34,7 +34,7 @@ export const deleteChat = createAsyncThunk(
 
 export const streamMessage = createAsyncThunk(
   "chat/streamMessage",
-  async (data: { chatId: number; message: string }, { dispatch }) => {
+  async (data: { chatId: number; message: string, model: string}, { dispatch }) => {
     const response = await fetch(`${API_URL}/chats/${data.chatId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

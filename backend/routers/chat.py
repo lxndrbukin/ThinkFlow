@@ -37,7 +37,7 @@ def delete_chat(chat_id: int, db: Session = Depends(get_db)):
 @chats_router.post("/{chat_id}")
 def post_message(chat_id: int, request: ChatRequest):
     def stream_generator(message):
-        for chunk in ai_chat(message=message, chat_id=chat_id):
+        for chunk in ai_chat(message=message, chat_id=chat_id, model=request.model):
             yield f"data: {chunk.replace(chr(10), '\\n')}\n\n"
         yield "data: [DONE]\n\n"
 

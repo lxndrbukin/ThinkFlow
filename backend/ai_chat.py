@@ -12,7 +12,7 @@ API_KEY = getenv("OPENAI_API_KEY")
 
 client = OpenAI(api_key=API_KEY)
 
-def ai_chat(chat_id: int, message: str) -> Generator[str, None, None]:
+def ai_chat(chat_id: int, message: str, model: str) -> Generator[str, None, None]:
     messages = trim_history(load_history(chat_id))
     message = ChatMessageCreate(
         role=Role.user,
@@ -24,7 +24,7 @@ def ai_chat(chat_id: int, message: str) -> Generator[str, None, None]:
     save_history(chat_id, message)
     try:
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=model,
             messages=messages,
             tools=tools,
             max_completion_tokens=250,
@@ -61,7 +61,7 @@ def ai_chat(chat_id: int, message: str) -> Generator[str, None, None]:
                 }.items() if v is not None})
                 save_history(chat_id, message)
             response = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model=model,
                 messages=messages,
                 tools=tools,
                 max_completion_tokens=250,
@@ -75,7 +75,7 @@ def ai_chat(chat_id: int, message: str) -> Generator[str, None, None]:
                     yield text
         else:
             response = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model=model,
                 messages=messages,
                 tools=tools,
                 max_completion_tokens=250,
