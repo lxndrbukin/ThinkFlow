@@ -36,6 +36,10 @@ const chatSlice = createSlice({
       state.currentChat.streamingContent = "";
       state.currentChat.isLoading = false;
     },
+    clearMessages(state: Chats) {
+      state.currentChat.messages = [];
+      state.currentChat.streamingContent = "";
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -85,5 +89,6 @@ const chatSlice = createSlice({
   },
 });
 
-export const { addMessage, appendChunk, finaliseMessage } = chatSlice.actions;
+export const { addMessage, appendChunk, finaliseMessage, clearMessages } =
+  chatSlice.actions;
 export default chatSlice.reducer;

@@ -1,11 +1,11 @@
 import type { JSX } from "react";
 import { Outlet } from "react-router-dom";
-import ChatsList from "./ChatsList/ChatsList";
+import SideNav from "./SideNav/SideNav";
 
 export default function App(): JSX.Element {
   return (
     <div className="container">
-      <ChatsList />
+      <SideNav />
       <Outlet />
     </div>
   );
