@@ -46,7 +46,6 @@ body {
   font-size: 15px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
 }
 
@@ -63,7 +62,8 @@ body {
   border-right: 1px solid var(--border);
   padding: var(--spacing-lg) var(--spacing-md);
   display: grid;
-  grid-template-rows: 70px 1fr;
+  grid-template-rows: auto 1fr;
+  gap: var(--spacing-xl);
 }
 
 .sidenav .sidenav-top {
@@ -72,18 +72,20 @@ body {
 }
 
 .sidenav .sidenav-top .logo {
-  font-size: 35px;
+  font-size: 20px;
   font-family: var(--mono-font);
   color: var(--muted);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   display: flex;
+  user-select: none;
+  text-decoration: none;
 }
 
 .sidenav #nav-toggle {
   justify-self: end;
   cursor: pointer;
-  height: fit-content;
+  align-self: center;
 }
 
 .sidenav-items {
@@ -105,19 +107,20 @@ body {
 .sidenav-items .sidenav-item:hover {
   background: var(--surface-two);
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
 }
 
 .sidenav--collapsed {
   width: 60px;
+  cursor: pointer;
+}
+
+.sidenav--collapsed .sidenav-top {
+  justify-content: center;
 }
 
 .sidenav--collapsed .sidenav-top .logo {
   display: none;
-}
-
-.sidenav--collapsed #nav-toggle {
-  justify-self: center;
 }
 
 .sidenav--collapsed .sidenav-items {
@@ -130,6 +133,7 @@ body {
   max-width: 780px;
   width: 100%;
   justify-self: center;
+  padding: var(--spacing-lg) 0;
 }
 
 .chat-window {

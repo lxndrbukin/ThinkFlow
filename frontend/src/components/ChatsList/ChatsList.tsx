@@ -1,4 +1,5 @@
 import { type JSX, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   type AppDispatch,
@@ -25,11 +26,17 @@ export default function ChatsList(): JSX.Element {
   };
 
   return (
-    <div className={`sidenav ${showNav ? "" : "sidenav--collapsed"}`}>
+    <div
+      className={`sidenav ${showNav ? "" : "sidenav--collapsed"}`}
+      onClick={() => {
+        if (!showNav) setShowNav(true);
+        return;
+      }}
+    >
       <div className="sidenav-top">
-        <div className="logo">
-          <i className="fa-solid fa-brain"></i>
-        </div>
+        <Link to="/" className="logo">
+          ThinkFlow
+        </Link>
         <i
           id="nav-toggle"
           onClick={() => setShowNav(!showNav)}
