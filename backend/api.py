@@ -7,7 +7,7 @@ app = FastAPI(title="ThinkFlow")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "https://thinkflow-eosin.vercel.app/"],
+    allow_origins=["http://localhost:5173", "https://thinkflow-eosin.vercel.app"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
