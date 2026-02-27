@@ -179,9 +179,9 @@ Each note contains the following fields:
 
 ## Future Improvements
 
-- [ ] PostgreSQL database for production-ready persistence
+- [x] PostgreSQL database for production-ready persistence
 - [ ] User authentication
-- [ ] Multiple conversation threads
+- [x] Multiple conversation threads
 - [ ] Multi-provider support (Anthropic Claude, xAI Grok, OpenAI GPT)
 - [ ] Adjustable model parameters (temperature, max tokens)
 - [ ] Deployable to Render (backend) + Vercel (frontend)
