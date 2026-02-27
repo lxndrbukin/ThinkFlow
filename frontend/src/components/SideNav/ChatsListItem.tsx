@@ -1,5 +1,5 @@
 import { type JSX, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { type ChatResponse, type AppDispatch, deleteChat } from "../../store";
 
@@ -12,6 +12,8 @@ export default function ChatsListItem({
 
   const [mouseOver, setMouseOver] = useState(false);
 
+  const { chatId } = useParams();
+
   const handleMouseOver = () => {
     setMouseOver(!mouseOver);
   };
@@ -21,7 +23,7 @@ export default function ChatsListItem({
       onClick={() => navigate(`/chat/${id}`)}
       onMouseEnter={handleMouseOver}
       onMouseLeave={handleMouseOver}
-      className="sidenav-item"
+      className={`sidenav-item ${Number(chatId) === id ? "active" : ""}`}
     >
       <span>{title}</span>
       {mouseOver && (

@@ -1,5 +1,5 @@
 import { type JSX, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootState, getChats } from "../../store";
 import ChatsList from "./ChatsList";
@@ -9,6 +9,8 @@ export default function SideNav(): JSX.Element {
   const { list } = useSelector((state: RootState) => state.chats);
 
   const [showNav, setShowNav] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getChats());
@@ -31,6 +33,17 @@ export default function SideNav(): JSX.Element {
           onClick={() => setShowNav(!showNav)}
           className={`fa-solid fa-angles-${showNav ? "left" : "right"}`}
         ></i>
+      </div>
+      <div className="sidenav-actions">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate("/");
+          }}
+        >
+          <i className="fa-solid fa-pen-to-square"></i>
+          <span>Chat</span>
+        </button>
       </div>
       <ChatsList list={list} />
     </div>
