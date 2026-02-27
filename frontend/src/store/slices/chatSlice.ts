@@ -15,6 +15,7 @@ const initialState: Chats = {
     messages: [],
     streamingContent: "",
     isLoading: false,
+    model: "gpt-5-nano"
   },
 };
 
@@ -40,6 +41,9 @@ const chatSlice = createSlice({
       state.currentChat.messages = [];
       state.currentChat.streamingContent = "";
     },
+    setModel(state: Chats, action: PayloadAction<string>) {
+      state.currentChat.model = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -89,6 +93,6 @@ const chatSlice = createSlice({
   },
 });
 
-export const { addMessage, appendChunk, finaliseMessage, clearMessages } =
+export const { addMessage, appendChunk, finaliseMessage, clearMessages, setModel } =
   chatSlice.actions;
 export default chatSlice.reducer;

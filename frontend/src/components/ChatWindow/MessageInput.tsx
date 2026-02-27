@@ -1,6 +1,7 @@
 import { type JSX, type FormEvent, type KeyboardEvent, useState } from "react";
 import { useSelector } from "react-redux";
 import { type RootState } from "../../store";
+import ModelSelector from "./ModelSelector";
 
 type MessageInputProps = {
   onSend: (message: string) => void;
@@ -38,9 +39,12 @@ export default function MessageInput({
         name="message"
         placeholder="Ask anything"
       ></textarea>
-      <button disabled={isLoading} type="submit">
-        <i className="fa-solid fa-paper-plane"></i>
-      </button>
+      <div className="message-input-actions">
+        <ModelSelector />
+        <button disabled={isLoading} type="submit">
+          <i className="fa-solid fa-paper-plane"></i>
+        </button>
+      </div>
     </form>
   );
 }
