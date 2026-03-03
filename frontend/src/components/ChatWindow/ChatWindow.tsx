@@ -19,7 +19,6 @@ export default function ChatWindow(): JSX.Element {
     isLoading,
     chatId: reduxChatId,
     messages,
-    model
   } = useSelector((state: RootState) => state.chats.currentChat);
 
   const { chatId } = useParams();
@@ -37,7 +36,7 @@ export default function ChatWindow(): JSX.Element {
     if (!message) return;
     if (!message.trim() || isLoading || !chatId) return;
     dispatch(addMessage({ role: "user", content: message }));
-    dispatch(streamMessage({ chatId: Number(chatId), message, model }));
+    dispatch(streamMessage({ chatId: Number(chatId), message }));
   };
 
   return (
