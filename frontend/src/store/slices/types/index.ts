@@ -8,7 +8,6 @@ export type ChatProps = {
   messages: Array<MessageProps>;
   streamingContent: string;
   isLoading: boolean;
-  // model: string;
 };
 
 export type ChatResponse = {
