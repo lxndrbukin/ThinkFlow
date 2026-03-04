@@ -18,7 +18,11 @@ export default function Home(): JSX.Element {
   const handleSend = async (message: PromptProps) => {
     const chat = await dispatch(createChat()).unwrap();
     dispatch(clearMessages());
-    dispatch(addMessage({ role: "user", content: message.input }));
+    const content: Array<any> = [{ type: "text", text: message.input }];
+    if (message.image) {
+      content.push({ type: "image", image: message.image });
+    }
+    dispatch(addMessage({ role: "user", content }));
     dispatch(streamMessage({ chatId: chat.id, message }));
     navigate(`/chat/${chat.id}`);
   };
