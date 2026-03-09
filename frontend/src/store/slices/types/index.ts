@@ -32,3 +32,13 @@ export type Chats = {
   currentChat: ChatProps;
   prompt: PromptProps;
 };
+
+export type AuthProps = {
+  token: string | null;
+  user: {
+    id: number;
+    username: string;
+  } | null;
+  isLoading: boolean;
+  error: string | null;
+};
