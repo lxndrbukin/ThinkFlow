@@ -1,6 +1,7 @@
 from fastapi import APIRouter, status, Depends
 from fastapi.responses import StreamingResponse
 from models.chat import ChatRequest
+from db_models.auth import User
 from ai_chat import ai_chat
 from crud.chat import (
     create_chat as create_chat_crud,
@@ -9,33 +10,34 @@ from crud.chat import (
     get_chat_messages as get_chat_msgs_crud,
     delete_chat as delete_chat_crud
 )
+from crud.auth import get_current_user
 from db import get_db
 from sqlalchemy.orm import Session
 
 chats_router = APIRouter(prefix="/chats")
 
 @chats_router.post("/", status_code=status.HTTP_201_CREATED)
-def create_chat(db: Session = Depends(get_db)):
-    return create_chat_crud(db)
+def create_chat(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    return create_chat_crud(db, current_user.id)
 
 @chats_router.get("/{chat_id}/messages", status_code=status.HTTP_200_OK)
-def get_chat_messages(chat_id: int, db: Session = Depends(get_db)):
+def get_chat_messages(chat_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     return get_chat_msgs_crud(chat_id, db)
 
 @chats_router.get("/{chat_id}", status_code=status.HTTP_200_OK)
-def get_chat(chat_id: int, db: Session = Depends(get_db)):
-    return get_chat_crud(chat_id, db)
+def get_chat(chat_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    return get_chat_crud(chat_id, db, current_user.id)
 
 @chats_router.get("/", status_code=status.HTTP_200_OK)
-def get_chats(db: Session = Depends(get_db)):
-    return get_chats_crud(db)
+def get_chats(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    return get_chats_crud(db, current_user.id)
 
 @chats_router.delete("/{chat_id}")
-def delete_chat(chat_id: int, db: Session = Depends(get_db)):
-    return delete_chat_crud(chat_id, db)
+def delete_chat(chat_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    return delete_chat_crud(chat_id, db, current_user.id)
 
 @chats_router.post("/{chat_id}")
-def post_message(chat_id: int, request: ChatRequest):
+def post_message(chat_id: int, request: ChatRequest, current_user: User = Depends(get_current_user)):
     def stream_generator():
         message = request.input if not request.image else [
             {"text": request.input},
