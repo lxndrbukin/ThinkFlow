@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { type AuthProps } from "./types";
-import { register, login } from "../thunks/auth";
+import { type AuthProps, type UserProps } from "./types";
+import { register, login, getMe } from "../thunks/auth";
 
 const initialState: AuthProps = {
   token: localStorage.getItem("token"),
@@ -50,6 +50,13 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.error = action.error.message || "Something went wrong";
     });
+    builder.addCase(
+      getMe.fulfilled,
+      (state: AuthProps, action: PayloadAction<UserProps>) => {
+        state.user = action.payload;
+        state.isLoading = false;
+      },
+    );
   },
 });
 

@@ -17,3 +17,8 @@ export const login = createAsyncThunk(
     return response.data.access_token;
   },
 );
+
+export const getMe = createAsyncThunk("auth/getMe", async () => {
+  const response = await axios.get(`${API_URL}/auth/me`);
+  return response.data;
+});

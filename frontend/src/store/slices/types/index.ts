@@ -33,12 +33,15 @@ export type Chats = {
   prompt: PromptProps;
 };
 
+export type UserProps = {
+  id: number;
+  username: string;
+  created_at: string;
+};
+
 export type AuthProps = {
   token: string | null;
-  user: {
-    id: number;
-    username: string;
-  } | null;
+  user: UserProps | null;
   isLoading: boolean;
   error: string | null;
 };
