@@ -8,8 +8,14 @@ class Role(str, Enum):
     system = "system"
     tool = "tool"
 
+class ImageData(BaseModel):
+    type: str
+    data: str
+    mediaType: str | None = None
+
 class ChatRequest(BaseModel):
-    message: str
+    input: str
+    image: ImageData | None = None
     model: str = "gpt-4o-mini"
 
 class ChatResponse(BaseModel):

@@ -9,8 +9,9 @@ class Chat(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(100), nullable=False)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     messages = relationship("ChatMessage", back_populates="chat", cascade="all, delete-orphan")
+    user = relationship("User", back_populates="chats")
 
 class ChatMessage(Base):
     __tablename__ = "chat_messages"

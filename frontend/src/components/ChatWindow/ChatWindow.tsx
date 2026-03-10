@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   type AppDispatch,
   type RootState,
+  type PromptProps,
   getMessages,
   streamMessage,
   addMessage,
@@ -32,10 +33,14 @@ export default function ChatWindow(): JSX.Element {
     dispatch(getMessages(Number(chatId)));
   }, [chatId]);
 
-  const handleSend = (message: string) => {
+  const handleSend = (message: PromptProps) => {
     if (!message) return;
-    if (!message.trim() || isLoading || !chatId) return;
-    dispatch(addMessage({ role: "user", content: message }));
+    if (!message.input.trim() || isLoading || !chatId) return;
+    const content: Array<any> = [{ type: "text", text: message.input }];
+    if (message.image) {
+      content.push({ type: "image", image: message.image });
+    }
+    dispatch(addMessage({ role: "user", content }));
     dispatch(streamMessage({ chatId: Number(chatId), message }));
   };
 

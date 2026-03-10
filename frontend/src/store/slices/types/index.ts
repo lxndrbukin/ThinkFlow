@@ -1,6 +1,17 @@
 export type MessageProps = {
   role: "user" | "assistant" | "tool" | "system";
-  content: string;
+  content: string | Array<any>;
+};
+
+export type ImageProps = {
+  type: "url" | "file";
+  data: string;
+  mediaType?: string;
+};
+
+export type PromptProps = {
+  input: string;
+  image: ImageProps | null;
 };
 
 export type ChatProps = {
@@ -19,4 +30,18 @@ export type ChatResponse = {
 export type Chats = {
   list: Array<ChatResponse>;
   currentChat: ChatProps;
+  prompt: PromptProps;
+};
+
+export type UserProps = {
+  id: number;
+  username: string;
+  created_at: string;
+};
+
+export type AuthProps = {
+  token: string | null;
+  user: UserProps | null;
+  isLoading: boolean;
+  error: string | null;
 };

@@ -5,6 +5,12 @@ import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import type { MessageProps } from "../../store";
 
 export default function Message({ role, content }: MessageProps): JSX.Element {
+  const returnContent = (content: string | Array<any>) => {
+    if (typeof content === "string") return content;
+    const textBlock = content.find((block) => block.type === "text");
+    return textBlock ? textBlock.text : "";
+  };
+
   return (
     <div className="message">
       <span className={`message-role-${role}`}>{role}</span>
@@ -27,7 +33,7 @@ export default function Message({ role, content }: MessageProps): JSX.Element {
             },
           }}
         >
-          {content}
+          {returnContent(content)}
         </ReactMarkdown>
       </div>
     </div>

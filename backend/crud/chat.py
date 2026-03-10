@@ -4,9 +4,10 @@ from models.chat import ChatMessageResponse, ChatResponse
 from sqlalchemy.orm import Session
 from utils import system_message
 
-def create_chat(db: Session, title: str = "New Chat"):
+def create_chat(db: Session, user_id: int, title: str = "New Chat"):
     chat = Chat(
-        title=title
+        title=title,
+        user_id=user_id
     )
     db.add(chat)
     db.flush()
@@ -20,15 +21,15 @@ def create_chat(db: Session, title: str = "New Chat"):
     db.commit()
     return ChatResponse(id=chat.id, title=chat.title, created_at=chat.created_at)
 
-def get_chats(db: Session):
-    chats = db.query(Chat).all()
+def get_chats(db: Session, user_id: int):
+    chats = db.query(Chat).filter(Chat.user_id == user_id).all()
     return [
         ChatResponse(id=c.id, title=c.title, created_at=c.created_at)
         for c in chats
     ]
 
-def get_chat(chat_id: int, db: Session):
-    chat = db.query(Chat).filter(Chat.id == chat_id).first()
+def get_chat(chat_id: int, db: Session, user_id: int):
+    chat = db.query(Chat).filter(Chat.id == chat_id, Chat.user_id == user_id).first()
     if not chat:
         raise HTTPException(status_code=404, detail="Chat not found")
     return ChatResponse(id=chat.id, title=chat.title, created_at=chat.created_at)
@@ -48,8 +49,8 @@ def get_chat_messages(chat_id: int, db: Session):
     ]
     return messages
 
-def delete_chat(chat_id: int, db: Session):
-    chat = db.query(Chat).filter(Chat.id == chat_id).first()
+def delete_chat(chat_id: int, db: Session, user_id: int):
+    chat = db.query(Chat).filter(Chat.id == chat_id, Chat.user_id == user_id).first()
     if not chat:
         raise HTTPException(status_code=404, detail="Chat not found")
     db.delete(chat)

@@ -16,6 +16,10 @@ const initialState: Chats = {
     streamingContent: "",
     isLoading: false,
   },
+  prompt: {
+    input: "",
+    image: null,
+  },
 };
 
 const chatSlice = createSlice({
