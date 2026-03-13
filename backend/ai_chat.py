@@ -12,7 +12,7 @@ API_KEY = getenv("OPENAI_API_KEY")
 
 client = OpenAI(api_key=API_KEY)
 
-def ai_chat(chat_id: int, message: str | list) -> Generator[str, None, None]:
+def ai_chat(chat_id: int, message: str | list, model: str) -> Generator[str, None, None]:
     if isinstance(message, list):
         text_content = message[0]["text"]
         image_data = message[1]["image"] if len(message) > 1 else None
@@ -33,12 +33,12 @@ def ai_chat(chat_id: int, message: str | list) -> Generator[str, None, None]:
             "type": "image_url",
             "image_url": {"url": f"data:{image_data['mediaType']};base64,{image_data['data']}"}
         })
-    model = "gpt-4o" if image_data else "gpt-4o-mini"
+    ai_model = "gpt-4o" if image_data else model
     messages.append({"role": "user", "content": content})
     save_history(chat_id, message)
     try:
         response = client.chat.completions.create(
-            model=model,
+            model=ai_model,
             messages=messages,
             tools=tools,
             max_completion_tokens=max_tokens,
@@ -75,7 +75,7 @@ def ai_chat(chat_id: int, message: str | list) -> Generator[str, None, None]:
                 }.items() if v is not None})
                 save_history(chat_id, message)
             response = client.chat.completions.create(
-                model=model,
+                model=ai_model,
                 messages=messages,
                 tools=tools,
                 max_completion_tokens=max_tokens,
@@ -89,7 +89,7 @@ def ai_chat(chat_id: int, message: str | list) -> Generator[str, None, None]:
                     yield text
         else:
             response = client.chat.completions.create(
-                model=model,
+                model=ai_model,
                 messages=messages,
                 tools=tools,
                 max_completion_tokens=max_tokens,
