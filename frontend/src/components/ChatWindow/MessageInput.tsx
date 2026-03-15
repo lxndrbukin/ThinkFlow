@@ -22,6 +22,9 @@ export default function MessageInput({
 
   const [image, setImage] = useState<ImageProps | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [model, setModel] = useState<string>(
+    localStorage.getItem("model") || "gpt-4o-mini",
+  );
   const [input, setInput] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -50,7 +53,7 @@ export default function MessageInput({
   };
 
   const handleSend = () => {
-    onSend({ input, image });
+    onSend({ input, image, model });
     setInput("");
     setImage(null);
     setPreview(null);
@@ -69,9 +72,14 @@ export default function MessageInput({
     handleSend();
   };
 
+  const handleModelChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setModel(e.target.value);
+    localStorage.setItem("model", e.target.value);
+  };
+
   const renderSelect = (): JSX.Element => {
     return (
-      <select>
+      <select onChange={handleModelChange}>
         <option value="gpt-4o-mini">GPT-4o Mini</option>
         <option value="gpt-4o">GPT-4o</option>
         <option value="gpt-4-turbo">GPT-4 Turbo</option>
