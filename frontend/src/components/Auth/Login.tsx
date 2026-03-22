@@ -1,11 +1,17 @@
 import { type JSX, type FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { type AppDispatch, type RootState, login, setError } from "../../store";
+import {
+  type AppDispatch,
+  type RootState,
+  login,
+  getMe,
+  setError,
+} from "../../store";
 
 export default function Login(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
-  const { error } = useSelector((state: RootState) => state.auth);
+  const { error, isLoading } = useSelector((state: RootState) => state.auth);
 
   const navigate = useNavigate();
 
@@ -28,6 +34,7 @@ export default function Login(): JSX.Element {
     }
     if (username.length && password.length) {
       await dispatch(login({ username, password })).unwrap();
+      await dispatch(getMe());
       navigate("/");
     }
   };
@@ -53,7 +60,9 @@ export default function Login(): JSX.Element {
         </div>
         {error && <p className="auth-form-error">{error}</p>}
 
-        <button type="submit">Login</button>
+        <button disabled={isLoading} type="submit">
+          Login
+        </button>
         <p>
           Don't have an account? <Link to="/register">Register</Link>
         </p>
