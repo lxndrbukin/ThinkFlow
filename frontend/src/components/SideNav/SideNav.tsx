@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootState, getChats } from "../../store";
 import ChatsList from "./ChatsList";
+import User from "./User";
 
 export default function SideNav(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
@@ -46,6 +47,7 @@ export default function SideNav(): JSX.Element {
         </button>
       </div>
       <ChatsList list={list} />
+      {showNav && <User />}
     </div>
   );
 }

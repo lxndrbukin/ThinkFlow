@@ -12,6 +12,7 @@ export type ImageProps = {
 export type PromptProps = {
   input: string;
   image: ImageProps | null;
+  model: string;
 };
 
 export type ChatProps = {

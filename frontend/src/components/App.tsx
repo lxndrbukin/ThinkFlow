@@ -1,11 +1,12 @@
 import { type JSX, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { type AppDispatch, getMe } from "../store";
+import { useDispatch, useSelector } from "react-redux";
+import { type AppDispatch, type RootState, getMe } from "../store";
 import SideNav from "./SideNav/SideNav";
 
 export default function App(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
+  const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -16,7 +17,7 @@ export default function App(): JSX.Element {
 
   return (
     <div className="container">
-      <SideNav />
+      {user ? <SideNav /> : <div />}
       <Outlet />
     </div>
   );

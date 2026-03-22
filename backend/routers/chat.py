@@ -43,7 +43,7 @@ def post_message(chat_id: int, request: ChatRequest, current_user: User = Depend
             {"text": request.input},
             {"image": request.image.model_dump()}
         ]
-        for chunk in ai_chat(message=message, chat_id=chat_id):
+        for chunk in ai_chat(message=message, chat_id=chat_id, model=request.model):
             yield f"data: {chunk.replace(chr(10), '\\n')}\n\n"
         yield "data: [DONE]\n\n"
 

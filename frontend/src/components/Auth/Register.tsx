@@ -1,11 +1,17 @@
 import { type JSX, type FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { type AppDispatch, type RootState, register } from "../../store";
+import {
+  type AppDispatch,
+  type RootState,
+  register,
+  getMe,
+  setError,
+} from "../../store";
 
 export default function Register(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
-  const { error } = useSelector((state: RootState) => state.auth);
+  const { error, isLoading } = useSelector((state: RootState) => state.auth);
 
   const navigate = useNavigate();
 
@@ -14,8 +20,21 @@ export default function Register(): JSX.Element {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!username.length && !password.length) {
+      dispatch(setError("Please enter username and password"));
+      return;
+    }
+    if (!username.length && password.length) {
+      dispatch(setError("Please enter username"));
+      return;
+    }
+    if (!password.length && username.length) {
+      dispatch(setError("Please enter password"));
+      return;
+    }
     if (username.length && password.length) {
       await dispatch(register({ username, password })).unwrap();
+      await dispatch(getMe());
       navigate("/");
     }
   };
@@ -40,7 +59,9 @@ export default function Register(): JSX.Element {
           />
         </div>
         {error && <p className="auth-form-error">{error}</p>}
-        <button type="submit">Register</button>
+        <button disabled={isLoading} type="submit">
+          Register
+        </button>
         <p>
           Already have an account? <Link to="/login">Login</Link>
         </p>

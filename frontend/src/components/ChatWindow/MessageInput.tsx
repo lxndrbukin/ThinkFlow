@@ -22,6 +22,9 @@ export default function MessageInput({
 
   const [image, setImage] = useState<ImageProps | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [model, setModel] = useState<string>(
+    localStorage.getItem("model") || "gpt-4o-mini",
+  );
   const [input, setInput] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -50,7 +53,7 @@ export default function MessageInput({
   };
 
   const handleSend = () => {
-    onSend({ input, image });
+    onSend({ input, image, model });
     setInput("");
     setImage(null);
     setPreview(null);
@@ -67,6 +70,24 @@ export default function MessageInput({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleSend();
+  };
+
+  const handleModelChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setModel(e.target.value);
+    localStorage.setItem("model", e.target.value);
+  };
+
+  const renderSelect = (): JSX.Element => {
+    return (
+      <select defaultValue={model} onChange={handleModelChange}>
+        <option value="gpt-4o-mini">GPT-4o Mini</option>
+        <option value="gpt-4o">GPT-4o</option>
+        <option value="gpt-4-turbo">GPT-4 Turbo</option>
+        <option value="gpt-4.1-mini">GPT-4.1 Mini</option>
+        <option value="gpt-4.1-nano">GPT-4.1 Nano</option>
+        <option value="gpt-4.1">GPT-4.1</option>
+      </select>
+    );
   };
 
   return (
@@ -98,6 +119,7 @@ export default function MessageInput({
           onChange={handleFileChange}
           style={{ display: "none" }}
         />
+        {renderSelect()}
         <button
           type="button"
           className={`attach-btn ${image ? "attach-btn--active" : ""}`}

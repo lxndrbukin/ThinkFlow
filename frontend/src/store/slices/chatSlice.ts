@@ -19,6 +19,7 @@ const initialState: Chats = {
   prompt: {
     input: "",
     image: null,
+    model: "gpt-4o-mini",
   },
 };
 
@@ -43,6 +44,9 @@ const chatSlice = createSlice({
     clearMessages(state: Chats) {
       state.currentChat.messages = [];
       state.currentChat.streamingContent = "";
+    },
+    setAIModel(state: Chats, action: PayloadAction<string>) {
+      state.prompt.model = action.payload;
     },
   },
   extraReducers: (builder) => {
