@@ -91,9 +91,9 @@ body {
 
 .sidenav-actions {
   list-style: none;
-  display: flex;
+  display: grid;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 }
 
 .sidenav-actions button {

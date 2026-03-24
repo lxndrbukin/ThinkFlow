@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "../components/App";
 import Home from "../components/Home/Home";
 import ChatWindow from "../components/ChatWindow/ChatWindow";
+import Notes from "../components/Notes/Notes";
 import Register from "../components/Auth/Register";
 import Login from "../components/Auth/Login";
 import ProtectedRoute from "../components/ProtectedRoute";
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <Home /> },
           { path: "chat/:chatId", element: <ChatWindow /> },
+          { path: "notes", element: <Notes /> },
         ],
       },
     ],

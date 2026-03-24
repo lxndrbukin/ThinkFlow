@@ -42,8 +42,18 @@ export default function SideNav(): JSX.Element {
             navigate("/");
           }}
         >
-          <i className="fa-solid fa-pen-to-square"></i>
+          <i className="fa-solid fa-comments"></i>
+
           <span>Chat</span>
+        </button>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate("/notes");
+          }}
+        >
+          <i className="fa-solid fa-pen-to-square"></i>
+          <span>Notes</span>
         </button>
       </div>
       <ChatsList list={list} />
