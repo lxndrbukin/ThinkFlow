@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime
+from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
 from db import Base
 from datetime import datetime, timezone
 
@@ -10,4 +10,5 @@ class Note(Base):
     desc = Column(Text)
     priority = Column(String(10), nullable=False)
     status = Column(String(20), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"))
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))

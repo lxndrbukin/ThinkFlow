@@ -3,12 +3,13 @@ from models.notes import NoteCreate, NoteResponse, NoteUpdate
 from db_models.notes import Note
 from sqlalchemy.orm import Session
 
-def create_note(data: NoteCreate, db: Session):
+def create_note(data: NoteCreate, user_id: int, db: Session):
     note = Note(
         title=data.title,
         desc=data.desc,
         priority=data.priority,
-        status=data.status
+        status=data.status,
+        user_id=user_id
     )
     db.add(note)
     db.commit()
@@ -22,8 +23,8 @@ def create_note(data: NoteCreate, db: Session):
         created_at=note.created_at
     )
 
-def get_note(note_id: int, db: Session):
-    note = db.query(Note).filter(Note.id == note_id).first()
+def get_note(note_id: int, user_id: int, db: Session):
+    note = db.query(Note).filter(Note.id == note_id, Note.user_id == user_id).first()
     if not note:
         raise HTTPException(status_code=404, detail="Note not found")
     return NoteResponse(
@@ -35,8 +36,8 @@ def get_note(note_id: int, db: Session):
         created_at=note.created_at
     )
 
-def get_notes(db: Session):
-    notes = db.query(Note).all()
+def get_notes(user_id: int, db: Session):
+    notes = db.query(Note).filter(Note.user_id == user_id).all()
     return [
         NoteResponse(
             id=note.id,
@@ -49,8 +50,8 @@ def get_notes(db: Session):
         for note in notes
     ]
 
-def edit_note(note_id: int, data: NoteUpdate, db: Session):
-    note = db.query(Note).filter(Note.id == note_id).first()
+def edit_note(note_id: int, user_id: int, data: NoteUpdate, db: Session):
+    note = db.query(Note).filter(Note.id == note_id, Note.user_id == user_id).first()
     if not note:
         raise HTTPException(status_code=404, detail="Note not found")
     if data.title is not None:
@@ -72,8 +73,8 @@ def edit_note(note_id: int, data: NoteUpdate, db: Session):
         created_at=note.created_at
     )
 
-def delete_note(note_id: int, db: Session):
-    note = db.query(Note).filter(Note.id == note_id).first()
+def delete_note(note_id: int, user_id: int, db: Session):
+    note = db.query(Note).filter(Note.id == note_id, Note.user_id == user_id).first()
     if not note:
         raise HTTPException(status_code=404, detail="Note not found")
     db.delete(note)
