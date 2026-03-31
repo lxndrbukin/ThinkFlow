@@ -69,6 +69,7 @@ export type NoteProps = {
   desc: string | null;
   status: Status | null;
   priority: Priority | null;
+  created_at: string | null;
 };
 
 export type Notes = {

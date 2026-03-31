@@ -16,6 +16,7 @@ const initialState: Notes = {
     desc: null,
     status: null,
     priority: null,
+    created_at: null,
   },
   isLoading: false,
 };
