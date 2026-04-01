@@ -46,3 +46,34 @@ export type AuthProps = {
   isLoading: boolean;
   error: string | null;
 };
+
+export const Priority = {
+  LOW: "low",
+  MEDIUM: "medium",
+  HIGH: "high",
+} as const;
+
+export type Priority = (typeof Priority)[keyof typeof Priority];
+
+export const Status = {
+  PENDING: "pending",
+  IN_PROGRESS: "in progress",
+  COMPLETED: "completed",
+} as const;
+
+export type Status = (typeof Status)[keyof typeof Status];
+
+export type NoteProps = {
+  id: number | null;
+  title: string | null;
+  desc: string | null;
+  status: Status | null;
+  priority: Priority | null;
+  created_at: string | null;
+};
+
+export type Notes = {
+  list: Array<NoteProps>;
+  currentNote: NoteProps;
+  isLoading: boolean;
+};

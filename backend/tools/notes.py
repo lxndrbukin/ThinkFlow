@@ -24,7 +24,7 @@ def get_notes():
 def get_note(note_id: int):
     db = SessionLocal()
     try:
-        note = get_note_crud(note_id, db)
+        note = get_note_crud(note_id, user_id=None, db=db)
         return f"**ID {note.id}: {note.title}**\n- Priority: {note.priority}\n- Status: {note.status}\n- {note.desc}"
     except Exception:
         return f"Note with ID {note_id} not found"
@@ -40,7 +40,7 @@ def create_note(title: str, desc: str, priority: Priority, status: Status):
             priority=priority,
             status=status
         )
-        result = create_note_crud(data, db)
+        result = create_note_crud(data, user_id=None, db=db)
         return f"Note {title} created with ID {result.id}"
     finally:
         db.close()
