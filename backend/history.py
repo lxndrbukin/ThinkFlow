@@ -20,7 +20,7 @@ def load_history(chat_id: int):
     db = SessionLocal()
     try:
         messages = db.query(ChatMessage).filter(ChatMessage.chat_id == chat_id).all()
-        return [
+        raw = [
             {
                 "role": msg.role,
                 "content": msg.content,
@@ -28,8 +28,29 @@ def load_history(chat_id: int):
             }
             for msg in messages
         ]
+        return _sanitize_tool_calls(raw)
     finally:
         db.close()
+
+def _sanitize_tool_calls(messages: list) -> list:
+    result = []
+    i = 0
+    while i < len(messages):
+        msg = messages[i]
+        if msg.get("role") == "assistant" and msg.get("tool_calls"):
+            expected_ids = {tc["id"] for tc in msg["tool_calls"]}
+            j = i + 1
+            found_ids = set()
+            while j < len(messages) and messages[j].get("role") == "tool":
+                found_ids.add(messages[j].get("tool_call_id"))
+                j += 1
+            if found_ids >= expected_ids:
+                result.extend(messages[i:j])
+            i = j
+        else:
+            result.append(msg)
+            i += 1
+    return result
 
 def delete_history(chat_id: int):
     db = SessionLocal()
