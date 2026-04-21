@@ -33,9 +33,11 @@ export default function Register(): JSX.Element {
       return;
     }
     if (username.length && password.length) {
-      await dispatch(register({ username, password })).unwrap();
-      await dispatch(getMe());
-      navigate("/");
+      try {
+        await dispatch(register({ username, password })).unwrap();
+        await dispatch(getMe());
+        navigate("/");
+      } catch {}
     }
   };
 

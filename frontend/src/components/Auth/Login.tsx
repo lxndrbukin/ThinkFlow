@@ -33,9 +33,11 @@ export default function Login(): JSX.Element {
       return;
     }
     if (username.length && password.length) {
-      await dispatch(login({ username, password })).unwrap();
-      await dispatch(getMe());
-      navigate("/");
+      try {
+        await dispatch(login({ username, password })).unwrap();
+        await dispatch(getMe());
+        navigate("/");
+      } catch {}
     }
   };
 

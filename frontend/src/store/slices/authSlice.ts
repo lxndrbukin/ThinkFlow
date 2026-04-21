@@ -33,10 +33,11 @@ const authSlice = createSlice({
     );
     builder.addCase(register.pending, (state: AuthProps) => {
       state.isLoading = true;
+      state.error = null;
     });
     builder.addCase(register.rejected, (state: AuthProps, action) => {
       state.isLoading = false;
-      state.error = action.error.message || "Something went wrong";
+      state.error = (action.payload as string) || "Something went wrong";
     });
     builder.addCase(
       login.fulfilled,
@@ -48,10 +49,11 @@ const authSlice = createSlice({
     );
     builder.addCase(login.pending, (state: AuthProps) => {
       state.isLoading = true;
+      state.error = null;
     });
     builder.addCase(login.rejected, (state: AuthProps, action) => {
       state.isLoading = false;
-      state.error = action.error.message || "Something went wrong";
+      state.error = (action.payload as string) || "Something went wrong";
     });
     builder.addCase(
       getMe.fulfilled,
