@@ -12,7 +12,7 @@ A full-stack **AI-powered personal assistant** built with Python and React. Feat
 - **Multiple Conversation Threads**: Create, switch between, and delete conversations via a collapsible sidebar
 - **Tool Calling**: The assistant autonomously uses tools based on user requests
   - **Current Date & Time**: Get the current date, time, or both
-  - **Weather**: Live weather data for any city via Open-Meteo (no API key required)
+  - **Weather**: Live weather data for any city via OpenWeather API
   - **Notes**: Create, edit, delete, and view personal notes with priority and status tracking
   - **Web Search**: Search the web in real time via Tavily API
 - **Persistent Chat History**: Conversation history saved to PostgreSQL across sessions
@@ -25,18 +25,19 @@ A full-stack **AI-powered personal assistant** built with Python and React. Feat
 
 **Backend**
 - Python 3.11+
-- FastAPI + Uvicorn
-- SQLAlchemy + PostgreSQL (Neon)
-- OpenAI API (`gpt-4o-mini`)
+- FastAPI 0.129 + Uvicorn 0.41
+- SQLAlchemy 2.0 + PostgreSQL (Neon)
+- OpenAI API 2.21 (`gpt-4o-mini`)
 - Tavily API (web search)
-- Open-Meteo API (weather, free — no key required)
+- OpenWeather API (weather)
 
 **Frontend**
-- React 18 + TypeScript
-- Redux Toolkit
-- React Router v6
-- Vite
-- `react-markdown` + `react-syntax-highlighter`
+- React 19 + TypeScript 5.9
+- Redux Toolkit 2.11
+- React Router v7
+- Axios 1.13
+- Vite 7
+- `react-markdown` 10 + `react-syntax-highlighter` 16
 
 **Deployment**
 - Backend → Render
@@ -51,6 +52,7 @@ A full-stack **AI-powered personal assistant** built with Python and React. Feat
 - Node.js 18+
 - OpenAI API key
 - Tavily API key
+- OpenWeather API key
 - PostgreSQL database (Neon recommended)
 
 ---
@@ -76,7 +78,9 @@ Create a `.env` file in the `backend` directory:
 ```env
 OPENAI_API_KEY=your_openai_api_key
 TAVILY_API_KEY=your_tavily_api_key
+OPENWEATHER_API_KEY=your_openweather_api_key
 DATABASE_URL=your_postgresql_connection_string
+SECRET_KEY=your_secret_key
 ```
 
 ### 3. Frontend setup
@@ -128,7 +132,7 @@ thinkflow/
 │   ├── ai_chat.py              # Core chat logic + SSE streaming generator
 │   ├── history.py              # Chat history DB operations
 │   ├── notes.py                # Notes tool functions (AI adapter layer)
-│   ├── weather.py              # Weather tool (Open-Meteo)
+│   ├── weather.py              # Weather tool (OpenWeather)
 │   ├── web_search.py           # Web search tool (Tavily)
 │   ├── current_datetime.py     # Datetime tool
 │   ├── utils.py                # Tool definitions + function map
